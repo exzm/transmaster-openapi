@@ -14,7 +14,7 @@ servers:
     url: 'https://staging.transmaster.com'
     description: 'Staging server'
 paths:
-  /ping:
+  /ping-pong:
     description: 'Проверка доступности API'
     get:
       summary: 'Проверка API'
