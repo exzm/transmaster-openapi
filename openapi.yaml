@@ -1,0 +1,24 @@
+openapi: 3.0.0
+info:
+  title: 'TransMaster API'
+  description: 'API for TransMaster'
+  contact:
+    name: 'Andrey Voinkov'
+    email: 'https://t.me/voinkov45'
+  version: 1.0.0
+servers:
+  -
+    url: 'https://api.transmaster.com'
+    description: 'Production server'
+  -
+    url: 'https://staging.transmaster.com'
+    description: 'Staging server'
+paths:
+  /ping:
+    description: 'Проверка доступности API'
+    get:
+      summary: 'Проверка API'
+      operationId: a35d0393d1a33c6c74d4807cb699cc36
+      responses:
+        '200':
+          description: 'Проверка успешна'
