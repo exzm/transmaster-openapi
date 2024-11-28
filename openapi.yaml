@@ -18,7 +18,7 @@ paths:
     description: 'Проверка доступности API'
     get:
       summary: 'Проверка API'
-      operationId: a35d0393d1a33c6c74d4807cb699cc36
+      operationId: 89835bd6094ed4657df707d6605d2148
       responses:
         '200':
           description: 'Проверка успешна'
