@@ -14,11 +14,11 @@ servers:
     url: 'https://staging.transmaster.com'
     description: 'Staging server'
 paths:
-  /ping-pong:
+  /ping-pong-lol:
     description: 'Проверка доступности API'
     get:
       summary: 'Проверка API'
-      operationId: 89835bd6094ed4657df707d6605d2148
+      operationId: 6b4101f5db2a691c4cecb0f9ea124916
       responses:
         '200':
           description: 'Проверка успешна'
