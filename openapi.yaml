@@ -4,7 +4,7 @@ info:
   description: 'API for TransMaster'
   contact:
     name: 'Andrey Voinkov'
-    email: 'https://t.me/voinkov45'
+    email: voinkov.andrey@yandex.ru
   version: 1.0.0
 servers:
   -
