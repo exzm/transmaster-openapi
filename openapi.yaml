@@ -14,11 +14,94 @@ servers:
     url: 'https://staging.transmaster.com'
     description: 'Staging server'
 paths:
-  /ping-pong-lol:
-    description: 'Проверка доступности API'
+  /news:
     get:
-      summary: 'Проверка API'
-      operationId: 6b4101f5db2a691c4cecb0f9ea124916
+      summary: 'Получение списка новостей'
+      operationId: ef8133d249d4a18fcbfca2054a9429ac
+      parameters:
+        -
+          name: tag
+          in: query
+          description: 'Фильтрация по ID тега'
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
-          description: 'Проверка успешна'
+          description: 'Список новостей'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsResponse'
+  '/news/show/{id}':
+    get:
+      summary: 'Получение новости по ID'
+      operationId: 6a89389b7b53035b39714ec029dce1ac
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID новости'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Данные новости'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsResponse'
+components:
+  schemas:
+    NewsResponse:
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        slug:
+          type: string
+        attachments:
+          type: array
+          items:
+            type: string
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        metatags:
+          properties:
+            title:
+              type: string
+              nullable: true
+            keywords:
+              type: string
+              nullable: true
+            description:
+              type: string
+              nullable: true
+          type: object
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              slug:
+                type: string
+            type: object
+      type: object
