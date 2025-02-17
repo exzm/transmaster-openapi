@@ -17,7 +17,7 @@ paths:
   /news:
     get:
       summary: 'Получение списка новостей'
-      operationId: ef8133d249d4a18fcbfca2054a9429ac
+      operationId: 6984575858659740ad63e05c94e0a300
       parameters:
         -
           name: tag
@@ -38,7 +38,7 @@ paths:
   '/news/show/{id}':
     get:
       summary: 'Получение новости по ID'
-      operationId: 6a89389b7b53035b39714ec029dce1ac
+      operationId: 932b249e392d2a6da8edef77b542bd63
       parameters:
         -
           name: id
