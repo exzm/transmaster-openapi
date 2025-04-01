@@ -54,6 +54,79 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NewsResponse'
+  /nomenclatures:
+    get:
+      summary: 'Получение списка номенклатур'
+      operationId: 9eb7bf090634cea4ccebff2b3bb7ac55
+      parameters:
+        -
+          name: brand
+          in: query
+          description: 'Фильтрация по бренду'
+          required: false
+          schema:
+            type: string
+        -
+          name: manufacturer
+          in: query
+          description: 'Фильтрация по производителю'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Список номенклатур'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NomenclatureResponse'
+  '/nomenclatures/show/{id}':
+    get:
+      summary: 'Получение номенклатуры по ID'
+      operationId: 90067f8775fde2496dd9bd476673ba7f
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID номенклатуры'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Данные номенклатуры'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NomenclatureResponse'
+  /nomenclatures/search:
+    get:
+      summary: 'Поиск номенклатур'
+      operationId: 0fb7a8b1bef4a77ce778b00427e70947
+      parameters:
+        -
+          name: query
+          in: query
+          description: 'Поисковый запрос'
+          required: true
+          schema:
+            type: string
+        -
+          name: page
+          in: query
+          description: 'Номер страницы'
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Результаты поиска'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NomenclatureSearchResponse'
 components:
   schemas:
     NewsResponse:
@@ -104,4 +177,127 @@ components:
               slug:
                 type: string
             type: object
+      type: object
+    NomenclatureResponse:
+      properties:
+        id:
+          type: integer
+        guid:
+          type: string
+        article:
+          type: string
+        brand:
+          type: string
+          nullable: true
+        manufacturer:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+        slug:
+          type: string
+        unit_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        attachments:
+          type: array
+          items:
+            type: string
+          nullable: true
+        metatags:
+          properties:
+            title:
+              type: string
+              nullable: true
+            keywords:
+              type: string
+              nullable: true
+            description:
+              type: string
+              nullable: true
+          type: object
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+        crosses:
+          type: array
+          items:
+            type: object
+      type: object
+    NomenclatureSearchResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NomenclatureResponse'
+        links:
+          properties:
+            first:
+              type: string
+            last:
+              type: string
+            prev:
+              type: string
+              nullable: true
+            next:
+              type: string
+              nullable: true
+          type: object
+        meta:
+          properties:
+            current_page:
+              type: integer
+            from:
+              type: integer
+            last_page:
+              type: integer
+            links:
+              type: array
+              items:
+                properties:
+                  url: { type: string, nullable: true }
+                  label: { type: string }
+                  active: { type: boolean }
+                type: object
+            path:
+              type: string
+            per_page:
+              type: integer
+            to:
+              type: integer
+            total:
+              type: integer
+          type: object
+        metatags:
+          properties:
+            title:
+              type: string
+              nullable: true
+            description:
+              type: string
+              nullable: true
+            keywords:
+              type: string
+              nullable: true
+          type: object
+          nullable: true
+        description:
+          type: string
+          nullable: true
       type: object
