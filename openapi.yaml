@@ -14,6 +14,42 @@ servers:
     url: 'https://staging.transmaster.com'
     description: 'Staging server'
 paths:
+  /blocks:
+    get:
+      tags:
+        - Блоки
+      summary: 'Получение списка блоков'
+      operationId: 431c674022dbdf7a53e94dbe33d3a8aa
+      responses:
+        '200':
+          description: 'Список блоков'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlocksResponse'
+  '/blocks/show/{code}':
+    get:
+      tags:
+        - Блоки
+      summary: 'Получение блока по CODE'
+      operationId: 9e3c536b42d2f673ba791240160379f3
+      parameters:
+        -
+          name: block
+          in: path
+          description: 'Code блока'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Данные блока'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { $ref: '#/components/schemas/BlockItem' }
+                type: object
   /categories:
     get:
       tags:
@@ -234,6 +270,74 @@ paths:
                 $ref: '#/components/schemas/PageItem'
 components:
   schemas:
+    Link:
+      properties:
+        url:
+          type: string
+          example: vk.com/transmaster
+        code:
+          type: string
+          example: vk
+        icon:
+          type: string
+          example: /storage/icon-vk.svg
+          nullable: true
+        title:
+          type: string
+          example: VK
+      type: object
+    Field:
+      properties:
+        body:
+          type: string
+          example: 'ЭТО СПИСОК СОЦ СЕТЕЙ В ФУТЕРЕ'
+        code:
+          type: string
+          example: socials
+        file:
+          type: string
+          nullable: true
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        title:
+          type: string
+          example: 'Соц. сети'
+      type: object
+    BlockItem:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Футер
+        code:
+          type: string
+          example: footer
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/Field'
+        metatags:
+          oneOf:
+            -
+              $ref: '#/components/schemas/MetaTags'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    BlocksResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockItem'
+      type: object
     CategoryItem:
       properties:
         id:
@@ -601,6 +705,9 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
       type: object
 tags:
+  -
+    name: Блоки
+    description: 'API для работы с блоками сайта'
   -
     name: Категории
     description: 'API для работы с категориями'
