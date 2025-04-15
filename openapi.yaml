@@ -16,6 +16,8 @@ servers:
 paths:
   /news:
     get:
+      tags:
+        - Новости
       summary: 'Получение списка новостей'
       operationId: 6984575858659740ad63e05c94e0a300
       parameters:
@@ -56,6 +58,8 @@ paths:
                 $ref: '#/components/schemas/NewsResponse'
   '/news/show/{id}':
     get:
+      tags:
+        - Новости
       summary: 'Получение новости по ID'
       operationId: 932b249e392d2a6da8edef77b542bd63
       parameters:
@@ -413,4 +417,7 @@ components:
         meta:
           $ref: '#/components/schemas/PaginationMeta'
       type: object
-tags: []
+tags:
+  -
+    name: Новости
+    description: 'API для работы с новостями'
