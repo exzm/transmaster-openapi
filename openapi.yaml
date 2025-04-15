@@ -69,20 +69,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NewsResponse'
-  '/news/show/{id}':
+  '/news/show/{slug}':
     get:
       tags:
         - Новости
       summary: 'Получение новости по ID'
-      operationId: 932b249e392d2a6da8edef77b542bd63
+      operationId: 0341265d014ca21e42ecb7d9e5d4076b
       parameters:
         -
-          name: id
+          name: slug
           in: path
-          description: 'ID новости'
+          description: 'Slug новости'
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: 'Данные новости'
@@ -224,7 +224,7 @@ paths:
           description: 'Slug страницы'
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: 'Данные страницы'
