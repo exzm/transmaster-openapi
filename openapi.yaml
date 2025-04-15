@@ -14,6 +14,19 @@ servers:
     url: 'https://staging.transmaster.com'
     description: 'Staging server'
 paths:
+  /categories:
+    get:
+      tags:
+        - Категории
+      summary: 'Получение списка категорий'
+      operationId: d40bd4448424bd166f2de3fd62064ac7
+      responses:
+        '200':
+          description: 'Список категорий с древовидной структурой'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoriesResponse'
   /news:
     get:
       tags:
@@ -156,8 +169,117 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NomenclatureSearchResponse'
+  /pages:
+    get:
+      tags:
+        - Страницы
+      summary: 'Получение списка страниц'
+      operationId: c60c1a152b98b39222c38655169b6062
+      parameters:
+        -
+          name: type
+          in: query
+          description: 'Фильтрация по типу страницы'
+          required: false
+          schema:
+            type: string
+        -
+          name: pinned
+          in: query
+          description: 'Фильтрация по закрепленности'
+          required: false
+          schema:
+            type: boolean
+        -
+          name: page
+          in: query
+          description: 'Номер страницы пагинации'
+          required: false
+          schema:
+            type: integer
+        -
+          name: per_page
+          in: query
+          description: 'Количество записей на странице'
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Список страниц с пагинацией'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagesResponse'
+  '/pages/show/{slug}':
+    get:
+      tags:
+        - Страницы
+      summary: 'Получение страницы по slug'
+      operationId: 8d3246a0d6105d3039fe089bc367ac42
+      parameters:
+        -
+          name: slug
+          in: path
+          description: 'Slug страницы'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Данные страницы'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageItem'
 components:
   schemas:
+    CategoryItem:
+      properties:
+        id:
+          type: integer
+        parent_id:
+          type: integer
+          nullable: true
+        name:
+          type: string
+          example: 'Детали выхлопной системы'
+        slug:
+          type: string
+          example: detali-vyxlopnoi-sistemy
+        description:
+          type: string
+          nullable: true
+        attachments:
+          properties:
+            icon:
+              type: string
+              nullable: true
+          type: object
+          nullable: true
+        pinned:
+          description: 'Закреплено на главной'
+          type: boolean
+        depth:
+          type: integer
+          example: 0
+        metatags:
+          oneOf:
+            -
+              $ref: '#/components/schemas/MetaTags'
+          nullable: true
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryItem'
+      type: object
+    CategoriesResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryItem'
+      type: object
     MetaTags:
       properties:
         title:
@@ -371,6 +493,56 @@ components:
           type: string
           nullable: true
       type: object
+    PageItem:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Контакты
+        body:
+          type: string
+          example: '<p>Текст страницы</p>'
+        slug:
+          type: string
+          example: contacts
+        type:
+          description: 'Тип страницы: information, front, contact, knowledge_base и т.д.'
+          type: string
+          example: information
+        pinned:
+          type: boolean
+          example: false
+        attachments:
+          type: array
+          items:
+            type: string
+        fields:
+          type: object
+          nullable: true
+        metatags:
+          oneOf:
+            -
+              $ref: '#/components/schemas/MetaTags'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    PagesResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PageItem'
+        links:
+          $ref: '#/components/schemas/PaginationLinks'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+      type: object
     PaginationLinks:
       properties:
         first:
@@ -430,8 +602,14 @@ components:
       type: object
 tags:
   -
+    name: Категории
+    description: 'API для работы с категориями'
+  -
     name: Новости
     description: 'API для работы с новостями'
   -
     name: Номенклатура
     description: 'API для работы с номенклатурой'
+  -
+    name: Страницы
+    description: 'API для работы со страницами'
