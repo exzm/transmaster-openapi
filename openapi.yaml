@@ -79,6 +79,8 @@ paths:
                 $ref: '#/components/schemas/NewsItem'
   /nomenclatures:
     get:
+      tags:
+        - Номенклатура
       summary: 'Получение списка номенклатур'
       operationId: 9eb7bf090634cea4ccebff2b3bb7ac55
       parameters:
@@ -107,6 +109,8 @@ paths:
                   $ref: '#/components/schemas/NomenclatureResponse'
   '/nomenclatures/show/{id}':
     get:
+      tags:
+        - Номенклатура
       summary: 'Получение номенклатуры по ID'
       operationId: 90067f8775fde2496dd9bd476673ba7f
       parameters:
@@ -126,6 +130,8 @@ paths:
                 $ref: '#/components/schemas/NomenclatureResponse'
   /nomenclatures/search:
     get:
+      tags:
+        - Номенклатура
       summary: 'Поиск номенклатур'
       operationId: 0fb7a8b1bef4a77ce778b00427e70947
       parameters:
@@ -421,3 +427,6 @@ tags:
   -
     name: Новости
     description: 'API для работы с новостями'
+  -
+    name: Номенклатура
+    description: 'API для работы с номенклатурой'
