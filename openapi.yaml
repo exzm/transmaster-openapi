@@ -413,3 +413,4 @@ components:
         meta:
           $ref: '#/components/schemas/PaginationMeta'
       type: object
+tags: []
