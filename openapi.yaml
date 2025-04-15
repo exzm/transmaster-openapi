@@ -176,12 +176,16 @@ components:
           type: integer
         title:
           type: string
+          example: 'Бу! Испугался?'
         body:
           type: string
+          example: 'Бу испугался не бойся Я друг, я тебя не обижу Иди сюда, иди ко мне'
         slug:
           type: string
+          example: /news/show/3
         pinned:
           type: boolean
+          example: true
         attachments:
           properties:
             files:
@@ -216,6 +220,7 @@ components:
                 type: integer
               name:
                 type: string
+                example: Новости
               slug:
                 type: string
               metatags:
