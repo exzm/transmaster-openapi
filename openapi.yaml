@@ -26,15 +26,34 @@ paths:
           required: false
           schema:
             type: integer
+        -
+          name: pinned
+          in: query
+          description: 'Фильтрация по закрепленности'
+          required: false
+          schema:
+            type: boolean
+        -
+          name: page
+          in: query
+          description: 'Номер страницы пагинации'
+          required: false
+          schema:
+            type: integer
+        -
+          name: per_page
+          in: query
+          description: 'Количество записей на странице'
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
-          description: 'Список новостей'
+          description: 'Список новостей с пагинацией'
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NewsResponse'
+                $ref: '#/components/schemas/NewsResponse'
   '/news/show/{id}':
     get:
       summary: 'Получение новости по ID'
@@ -53,7 +72,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NewsResponse'
+                $ref: '#/components/schemas/NewsItem'
   /nomenclatures:
     get:
       summary: 'Получение списка номенклатур'
@@ -129,7 +148,19 @@ paths:
                 $ref: '#/components/schemas/NomenclatureSearchResponse'
 components:
   schemas:
-    NewsResponse:
+    MetaTags:
+      properties:
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        keywords:
+          type: string
+          nullable: true
+      type: object
+    NewsItem:
       properties:
         id:
           type: integer
@@ -139,26 +170,27 @@ components:
           type: string
         slug:
           type: string
+        pinned:
+          type: boolean
         attachments:
-          type: array
-          items:
-            type: string
+          properties:
+            files:
+              type: array
+              items:
+                type: string
+            images:
+              type: array
+              items:
+                type: string
+          type: object
         published_at:
           type: string
           format: date-time
           nullable: true
         metatags:
-          properties:
-            title:
-              type: string
-              nullable: true
-            keywords:
-              type: string
-              nullable: true
-            description:
-              type: string
-              nullable: true
-          type: object
+          oneOf:
+            -
+              $ref: '#/components/schemas/MetaTags'
           nullable: true
         created_at:
           type: string
@@ -176,7 +208,30 @@ components:
                 type: string
               slug:
                 type: string
+              metatags:
+                oneOf:
+                  - { $ref: '#/components/schemas/MetaTags' }
+                nullable: true
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
             type: object
+      type: object
+    NewsResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsItem'
+        links:
+          $ref: '#/components/schemas/PaginationLinks'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+        metatags:
+          $ref: '#/components/schemas/MetaTags'
       type: object
     NomenclatureResponse:
       properties:
@@ -300,4 +355,61 @@ components:
         description:
           type: string
           nullable: true
+      type: object
+    PaginationLinks:
+      properties:
+        first:
+          type: string
+          nullable: true
+        last:
+          type: string
+          nullable: true
+        prev:
+          type: string
+          nullable: true
+        next:
+          type: string
+          nullable: true
+      type: object
+    PaginationLinkItem:
+      properties:
+        url:
+          type: string
+          nullable: true
+        label:
+          type: string
+        active:
+          type: boolean
+      type: object
+    PaginationMeta:
+      properties:
+        current_page:
+          type: integer
+        from:
+          type: integer
+        last_page:
+          type: integer
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaginationLinkItem'
+        path:
+          type: string
+        per_page:
+          type: integer
+        to:
+          type: integer
+        total:
+          type: integer
+      type: object
+    PaginatedResponse:
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        links:
+          $ref: '#/components/schemas/PaginationLinks'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
       type: object
