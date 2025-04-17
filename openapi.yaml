@@ -1,17 +1,17 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-04-16 10:37:24 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-04-17 12:01:53 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
   version: 1.0.0
 servers:
   -
-    url: 'https://api.transmaster.com'
+    url: 'https://api.transmaster.ru'
     description: 'Production server'
   -
-    url: 'https://staging.transmaster.com'
+    url: 'https://staging.transmaster.ru'
     description: 'Staging server'
 paths:
   /blocks:
@@ -130,9 +130,16 @@ paths:
     get:
       tags:
         - Номенклатура
-      summary: 'Получение списка номенклатур'
-      operationId: 9eb7bf090634cea4ccebff2b3bb7ac55
+      summary: 'Получение списка номенклатуры'
+      operationId: 52661a5dc1515a187cfb538e90ac37fc
       parameters:
+        -
+          name: category
+          in: query
+          description: 'Фильтрация по ID категории'
+          required: false
+          schema:
+            type: integer
         -
           name: brand
           in: query
@@ -141,48 +148,32 @@ paths:
           schema:
             type: string
         -
-          name: manufacturer
+          name: page
           in: query
-          description: 'Фильтрация по производителю'
+          description: 'Номер страницы пагинации'
           required: false
           schema:
-            type: string
-      responses:
-        '200':
-          description: 'Список номенклатур'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NomenclatureResponse'
-  '/nomenclatures/show/{id}':
-    get:
-      tags:
-        - Номенклатура
-      summary: 'Получение номенклатуры по ID'
-      operationId: 90067f8775fde2496dd9bd476673ba7f
-      parameters:
+            type: integer
         -
-          name: id
-          in: path
-          description: 'ID номенклатуры'
-          required: true
+          name: per_page
+          in: query
+          description: 'Количество записей на странице'
+          required: false
           schema:
             type: integer
       responses:
         '200':
-          description: 'Данные номенклатуры'
+          description: 'Список номенклатуры с пагинацией'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NomenclatureResponse'
+                $ref: '#/components/schemas/NomenclatureSearchResponse'
   /nomenclatures/search:
     get:
       tags:
         - Номенклатура
-      summary: 'Поиск номенклатур'
-      operationId: 0fb7a8b1bef4a77ce778b00427e70947
+      summary: 'Поиск по номенклатуре'
+      operationId: 99a9266618a9c932ffbd2ad4b7241d59
       parameters:
         -
           name: query
@@ -194,17 +185,45 @@ paths:
         -
           name: page
           in: query
-          description: 'Номер страницы'
+          description: 'Номер страницы пагинации'
+          required: false
+          schema:
+            type: integer
+        -
+          name: per_page
+          in: query
+          description: 'Количество записей на странице'
           required: false
           schema:
             type: integer
       responses:
         '200':
-          description: 'Результаты поиска'
+          description: 'Результаты поиска по номенклатуре с пагинацией'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/NomenclatureSearchResponse'
+  '/nomenclatures/{slug}':
+    get:
+      tags:
+        - Номенклатура
+      summary: 'Получение номенклатуры по slug'
+      operationId: 5e827dc8620bc2664e8392a68d08da6a
+      parameters:
+        -
+          name: slug
+          in: path
+          description: 'Slug номенклатуры'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Данные номенклатуры'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NomenclatureItem'
   /pages:
     get:
       tags:
@@ -270,6 +289,61 @@ paths:
                 $ref: '#/components/schemas/PageItem'
 components:
   schemas:
+    Manufacturer:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Lada
+        is_active:
+          type: boolean
+          example: true
+      type: object
+    Model:
+      properties:
+        id:
+          type: integer
+          example: 1
+        auto_manufacturer_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: '2115'
+      type: object
+    Modification:
+      properties:
+        id:
+          type: integer
+          example: 1
+        car_id:
+          type: integer
+          example: 3095967
+        auto_model_id:
+          type: integer
+          example: 1
+        auto_manufacturer_id:
+          type: integer
+          example: 1
+        bodytype:
+          type: string
+          example: sedan
+        modification:
+          type: string
+          example: Legend
+        year_start:
+          type: integer
+          example: 1988
+        year_end:
+          type: integer
+          example: 2030
+        model:
+          $ref: '#/components/schemas/Model'
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+      type: object
     Link:
       properties:
         url:
@@ -469,52 +543,117 @@ components:
         metatags:
           $ref: '#/components/schemas/MetaTags'
       type: object
-    NomenclatureResponse:
+    NomenclatureCross:
+      properties:
+        id:
+          type: integer
+        brand:
+          type: string
+          example: LADA
+        article:
+          type: string
+          example: '31337'
+        comment:
+          type: string
+          nullable: true
+        is_oem:
+          type: boolean
+      type: object
+    PropertyUnit:
+      properties:
+        name:
+          type: string
+          example: Метр
+        short_name:
+          type: string
+          example: м
+        code:
+          type: string
+          example: '006'
+        international_code:
+          type: string
+          example: MTR
+      type: object
+    Property:
+      properties:
+        name:
+          type: string
+          example: Высота
+        unit_id:
+          type: integer
+        unit:
+          $ref: '#/components/schemas/PropertyUnit'
+      type: object
+    NomenclatureProperty:
+      properties:
+        property_id:
+          type: integer
+        value:
+          type: string
+        property:
+          $ref: '#/components/schemas/Property'
+      type: object
+    Applicability:
+      properties:
+        id:
+          type: integer
+          example: 1
+        nomenclature_id:
+          type: integer
+          example: 15
+        auto_modification_id:
+          type: integer
+          example: 1
+        comment:
+          type: string
+          example: 'Устанавливается с правой стороны'
+          nullable: true
+        modification:
+          $ref: '#/components/schemas/Modification'
+      type: object
+    NomenclatureItem:
       properties:
         id:
           type: integer
         guid:
           type: string
+          example: bf3a0627-8845-11e5-84b7-3440b58ef7c3
         article:
           type: string
+          example: '8213227100'
         brand:
           type: string
+          example: MOBIS
           nullable: true
         manufacturer:
           type: string
-          nullable: true
+          example: HYUNDAI/KIA/MOBIS
         code:
           type: string
-          nullable: true
+          example: '77486'
         slug:
           type: string
+          example: klipsa-hyundaikiamobis-8213227100
         unit_id:
           type: integer
         name:
           type: string
+          example: 'КЛИПСА HYUNDAI/KIA/MOBIS 8213227100'
         description:
           type: string
           nullable: true
         country:
           type: string
-          nullable: true
+          example: 'КОРЕЯ, РЕСПУБЛИКА'
         attachments:
           type: array
           items:
             type: string
           nullable: true
         metatags:
-          properties:
-            title:
-              type: string
-              nullable: true
-            keywords:
-              type: string
-              nullable: true
-            description:
-              type: string
-              nullable: true
-          type: object
+          oneOf:
+            -
+              $ref: '#/components/schemas/MetaTags'
           nullable: true
         created_at:
           type: string
@@ -526,71 +665,37 @@ components:
           type: string
           format: date-time
           nullable: true
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/NomenclatureProperty'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryItem'
+        applicabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Applicability'
         crosses:
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/NomenclatureCross'
       type: object
     NomenclatureSearchResponse:
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/NomenclatureResponse'
+            $ref: '#/components/schemas/NomenclatureItem'
         links:
-          properties:
-            first:
-              type: string
-            last:
-              type: string
-            prev:
-              type: string
-              nullable: true
-            next:
-              type: string
-              nullable: true
-          type: object
+          $ref: '#/components/schemas/PaginationLinks'
         meta:
-          properties:
-            current_page:
-              type: integer
-            from:
-              type: integer
-            last_page:
-              type: integer
-            links:
-              type: array
-              items:
-                properties:
-                  url: { type: string, nullable: true }
-                  label: { type: string }
-                  active: { type: boolean }
-                type: object
-            path:
-              type: string
-            per_page:
-              type: integer
-            to:
-              type: integer
-            total:
-              type: integer
-          type: object
+          $ref: '#/components/schemas/PaginationMeta'
         metatags:
-          properties:
-            title:
-              type: string
-              nullable: true
-            description:
-              type: string
-              nullable: true
-            keywords:
-              type: string
-              nullable: true
-          type: object
-          nullable: true
+          $ref: '#/components/schemas/MetaTags'
         description:
           type: string
-          nullable: true
       type: object
     PageItem:
       properties:
