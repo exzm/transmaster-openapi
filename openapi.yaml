@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-04-17 12:01:53 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-04-21 11:48:34 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -141,13 +141,6 @@ paths:
           schema:
             type: integer
         -
-          name: brand
-          in: query
-          description: 'Фильтрация по бренду'
-          required: false
-          schema:
-            type: string
-        -
           name: page
           in: query
           description: 'Номер страницы пагинации'
@@ -169,19 +162,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/NomenclatureSearchResponse'
   /nomenclatures/search:
-    get:
+    post:
       tags:
         - Номенклатура
       summary: 'Поиск по номенклатуре'
-      operationId: 99a9266618a9c932ffbd2ad4b7241d59
+      operationId: 5aff78874e673878acc262b977d260e0
       parameters:
-        -
-          name: query
-          in: query
-          description: 'Поисковый запрос'
-          required: true
-          schema:
-            type: string
         -
           name: page
           in: query
@@ -196,9 +182,25 @@ paths:
           required: false
           schema:
             type: integer
+      requestBody:
+        description: 'Параметры поиска номенклатуры'
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                query:
+                  description: 'Поисковый запрос'
+                  type: string
+                  example: клипса
+                filters:
+                  description: 'Массив фильтров для уточнения поиска'
+                  type: array
+                  items: { $ref: '#/components/schemas/SearchFilter' }
+              type: object
       responses:
         '200':
-          description: 'Результаты поиска по номенклатуре с пагинацией'
+          description: 'Результаты поиска по номенклатуре с пагинацией и доступными фильтрами'
           content:
             application/json:
               schema:
@@ -593,6 +595,45 @@ components:
         property:
           $ref: '#/components/schemas/Property'
       type: object
+    FilterPropertyValue:
+      properties:
+        value:
+          type: string
+          example: '5'
+        count:
+          type: integer
+          example: 42
+        selected:
+          type: boolean
+          example: true
+      type: object
+    FilterProperty:
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: Высота
+        unit:
+          oneOf:
+            -
+              $ref: '#/components/schemas/PropertyUnit'
+          nullable: true
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterPropertyValue'
+      type: object
+    SearchFilter:
+      properties:
+        property_id:
+          type: integer
+          example: 2
+        value:
+          type: string
+          example: '5'
+      type: object
     Applicability:
       properties:
         id:
@@ -696,6 +737,10 @@ components:
           $ref: '#/components/schemas/MetaTags'
         description:
           type: string
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterProperty'
       type: object
     PageItem:
       properties:
