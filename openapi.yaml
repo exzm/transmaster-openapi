@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-05-05 16:27:02 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-05-07 17:55:32 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -63,6 +63,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CategoriesResponse'
+  /feedback:
+    post:
+      tags:
+        - Feedback
+      summary: 'Отправить обратную связь'
+      operationId: 24bfe3dc17c7b2c6d77d9f7d2ee7ccf8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackRequest'
+      responses:
+        '200':
+          description: 'Успешная отправка'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackResponse'
+        '422':
+          description: 'Ошибка валидации'
   /news:
     get:
       tags:
@@ -454,6 +475,37 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CategoryItem'
+      type: object
+    FeedbackRequest:
+      required:
+        - comment
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          example: 'Иван Иванов'
+          nullable: true
+        phone:
+          type: string
+          maxLength: 255
+          example: '+79991234567'
+          nullable: true
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          example: user@example.com
+          nullable: true
+        comment:
+          type: string
+          maxLength: 1024
+          example: 'Это тестовый комментарий'
+      type: object
+    FeedbackResponse:
+      properties:
+        message:
+          type: string
+          example: 'Запрос успешно отправлен!'
       type: object
     MetaTags:
       properties:
@@ -856,6 +908,9 @@ tags:
   -
     name: Категории
     description: 'API для работы с категориями'
+  -
+    name: Feedback
+    description: 'API для работы с обратной связью'
   -
     name: Новости
     description: 'API для работы с новостями'
