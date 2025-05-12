@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-05-11 17:37:30 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-05-12 09:17:10 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -774,6 +774,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NomenclatureCross'
+        unit:
+          $ref: '#/components/schemas/PropertyUnit'
       type: object
     NomenclatureSearchResponse:
       properties:
