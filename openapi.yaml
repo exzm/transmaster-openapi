@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-05-19 11:19:03 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-05-19 17:33:07 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -226,12 +226,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NomenclatureSearchResponse'
-  '/nomenclatures/{slug}':
+  '/nomenclatures/show/{slug}':
     get:
       tags:
         - Номенклатура
       summary: 'Получение номенклатуры по slug'
-      operationId: 5e827dc8620bc2664e8392a68d08da6a
+      operationId: 1a5fa8d2fcb2293511317faf834b30c7
       parameters:
         -
           name: slug
