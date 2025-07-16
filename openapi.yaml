@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-07-16 17:47:38 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-07-16 21:38:00 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -257,10 +257,13 @@ paths:
         -
           name: type
           in: query
-          description: 'Фильтрация по типу страницы'
+          description: 'Фильтрация по типу страницы, информационные страницы и база знаний'
           required: false
           schema:
             type: string
+            enum:
+              - information
+              - knowledge_base
         -
           name: pinned
           in: query
@@ -823,6 +826,28 @@ components:
         fields:
           type: object
           nullable: true
+        tags:
+          type: array
+          items:
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+                example: Новости
+              slug:
+                type: string
+              metatags:
+                oneOf:
+                  - { $ref: '#/components/schemas/MetaTags' }
+                nullable: true
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+            type: object
         metatags:
           oneOf:
             -
