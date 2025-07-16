@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-07-16 22:43:47 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-07-16 23:15:48 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -530,8 +530,13 @@ components:
           type: string
           example: 'Бу! Испугался?'
         body:
+          description: Содержимое
           type: string
-          example: 'Бу испугался не бойся Я друг, я тебя не обижу Иди сюда, иди ко мне'
+          example: 'Какая-то новость'
+        excerpt:
+          description: Аннонс
+          type: string
+          example: 'Краткая выжимка'
         slug:
           type: string
           example: /news/show/3
@@ -809,6 +814,10 @@ components:
         body:
           type: string
           example: '<p>Текст страницы</p>'
+        excerpt:
+          description: Аннонс
+          type: string
+          example: 'Краткая выжимка'
         slug:
           type: string
           example: contacts
