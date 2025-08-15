@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-08-15 10:44:19 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-08-15 11:12:24 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -572,25 +572,7 @@ components:
         tags:
           type: array
           items:
-            properties:
-              id:
-                type: integer
-              name:
-                type: string
-                example: Новости
-              slug:
-                type: string
-              metatags:
-                oneOf:
-                  - { $ref: '#/components/schemas/MetaTags' }
-                nullable: true
-              created_at:
-                type: string
-                format: date-time
-              updated_at:
-                type: string
-                format: date-time
-            type: object
+            $ref: '#/components/schemas/TagItem'
       type: object
     NewsResponse:
       properties:
@@ -598,6 +580,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NewsItem'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagItem'
         links:
           $ref: '#/components/schemas/PaginationLinks'
         meta:
@@ -838,25 +824,7 @@ components:
         tags:
           type: array
           items:
-            properties:
-              id:
-                type: integer
-              name:
-                type: string
-                example: Новости
-              slug:
-                type: string
-              metatags:
-                oneOf:
-                  - { $ref: '#/components/schemas/MetaTags' }
-                nullable: true
-              created_at:
-                type: string
-                format: date-time
-              updated_at:
-                type: string
-                format: date-time
-            type: object
+            $ref: '#/components/schemas/TagItem'
         related:
           description: 'Связанные материалы'
           type: array
@@ -885,6 +853,10 @@ components:
           $ref: '#/components/schemas/PaginationLinks'
         meta:
           $ref: '#/components/schemas/PaginationMeta'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagItem'
       type: object
     PaginationLinks:
       properties:
@@ -942,6 +914,31 @@ components:
           $ref: '#/components/schemas/PaginationLinks'
         meta:
           $ref: '#/components/schemas/PaginationMeta'
+      type: object
+    TagItem:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Новости
+        slug:
+          type: string
+          example: news
+        metatags:
+          oneOf:
+            -
+              $ref: '#/components/schemas/MetaTags'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-12-01T10:00:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2023-12-01T10:00:00Z'
       type: object
 tags:
   -
