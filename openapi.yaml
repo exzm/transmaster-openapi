@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-08-15 11:24:13 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-08-15 11:25:20 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -573,6 +573,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TagItem'
+        related:
+          description: 'Связанные новости'
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsItem'
       type: object
     NewsResponse:
       properties:
@@ -830,7 +835,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PageItem'
-          nullable: true
         metatags:
           oneOf:
             -
