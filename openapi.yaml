@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-08-15 11:25:20 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-08-15 20:33:54 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -214,6 +214,10 @@ paths:
                   description: 'Поисковый запрос'
                   type: string
                   example: клипса
+                category_id:
+                  description: 'Фильтрация по ID категории'
+                  type: integer
+                  example: '100'
                 filters:
                   description: 'Массив фильтров для уточнения поиска'
                   type: array
@@ -222,6 +226,27 @@ paths:
       responses:
         '200':
           description: 'Результаты поиска по номенклатуре с пагинацией и доступными фильтрами'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NomenclatureSearchResponse'
+  '/nomenclatures/{categotyId}':
+    get:
+      tags:
+        - Номенклатура
+      summary: 'Получение номенклатуры по ID категории'
+      operationId: fc088a77910cbf6fe27df9219c930b29
+      parameters:
+        -
+          name: categotyId
+          in: path
+          description: 'Идентификатор категории'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Список номенклатуры с пагинацией'
           content:
             application/json:
               schema:
@@ -794,6 +819,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilterProperty'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryItem'
       type: object
     PageItem:
       properties:
