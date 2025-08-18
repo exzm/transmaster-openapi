@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-08-15 20:33:54 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-08-18 14:13:23 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
