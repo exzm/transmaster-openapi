@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-08-18 14:13:23 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-08-26 21:09:04 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -528,6 +528,13 @@ components:
           type: string
           maxLength: 1024
           example: 'Это тестовый комментарий'
+        type:
+          type: string
+          enum:
+            - feedback
+            - news_suggestion
+          example: feedback
+          nullable: true
       type: object
     FeedbackResponse:
       properties:
