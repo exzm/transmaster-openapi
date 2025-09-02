@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-08-28 08:59:54 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-09-02 12:37:08 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -338,6 +338,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PageItem'
+  /last-change:
+    get:
+      tags:
+        - 'Системная информация'
+      summary: 'Получение времени последнего изменения данных'
+      description: 'Возвращает отметку времени последнего изменения данных в системе. Используется фронтендом для инвалидации кеша.'
+      operationId: 6ba3442fd9a8763633c5083b1646b846
+      parameters:
+        -
+          name: If-None-Match
+          in: header
+          description: 'ETag предыдущего ответа для проверки изменения (вернет 304 если не изменилось)'
+          required: false
+          schema:
+            type: string
+            example: 'W/"d3486ae9136e7856bc42212385ea797094475802"'
+      responses:
+        '200':
+          description: 'Текущая метка времени изменений'
+          headers:
+            ETag:
+              description: 'Хеш содержимого ответа'
+              schema:
+                type: string
+            Cache-Control:
+              description: 'Политика кеширования'
+              schema:
+                type: string
+                example: 'public, max-age=5, immutable'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastChangeResponse'
+        '304':
+          description: 'Данные не изменились с прошлого запроса (If-None-Match)'
 components:
   schemas:
     Manufacturer:
@@ -955,6 +990,19 @@ components:
         meta:
           $ref: '#/components/schemas/PaginationMeta'
       type: object
+    LastChangeResponse:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: '2025-09-02T12:34:56Z'
+        epoch:
+          type: integer
+          example: 1756816496
+        source:
+          type: string
+          example: redis-meta
+      type: object
     TagItem:
       properties:
         id:
@@ -999,3 +1047,6 @@ tags:
   -
     name: Страницы
     description: 'API для работы со страницами'
+  -
+    name: 'Системная информация'
+    description: 'Служебные эндпоинты системы'
