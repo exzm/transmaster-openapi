@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-10-13 08:48:03 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-10-15 10:52:21 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -84,12 +84,12 @@ paths:
                 $ref: '#/components/schemas/FeedbackResponse'
         '422':
           description: 'Ошибка валидации'
-  /news:
+  /expert-column:
     get:
       tags:
-        - Новости
-      summary: 'Получение списка новостей'
-      operationId: 6984575858659740ad63e05c94e0a300
+        - 'Колонка эксперта'
+      summary: 'Получение списка статей колонки эксперта'
+      operationId: 9272c94f173eb6a08c5b7011e035c9c6
       parameters:
         -
           name: tag
@@ -121,28 +121,28 @@ paths:
             type: integer
       responses:
         '200':
-          description: 'Список новостей с пагинацией'
+          description: 'Список статей колонки эксперта с пагинацией'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/NewsResponse'
-  '/news/show/{slug}':
+  '/expert-column/show/{slug}':
     get:
       tags:
-        - Новости
-      summary: 'Получение новости по ID'
-      operationId: 0341265d014ca21e42ecb7d9e5d4076b
+        - 'Колонка эксперта'
+      summary: 'Получение статьи по ID'
+      operationId: 8c1c95764d02f2c091eec47c00c439e5
       parameters:
         -
           name: slug
           in: path
-          description: 'Slug новости'
+          description: 'Slug статьи'
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: 'Данные новости'
+          description: 'Данные статьи'
           content:
             application/json:
               schema:
@@ -567,7 +567,7 @@ components:
           type: string
           enum:
             - feedback
-            - news_suggestion
+            - article_suggestion
           example: feedback
           nullable: true
       type: object
@@ -599,14 +599,14 @@ components:
         body:
           description: Содержимое
           type: string
-          example: 'Какая-то новость'
+          example: 'Какая-то статья'
         excerpt:
           description: Аннонс
           type: string
           example: 'Краткая выжимка'
         slug:
           type: string
-          example: /news/show/3
+          example: /expert-column/show/3
         pinned:
           type: boolean
           example: true
@@ -621,6 +621,11 @@ components:
               items:
                 type: string
           type: object
+        preview_image:
+          description: 'Полный URL пути до preview изображения'
+          type: string
+          example: 'https://api.transmaster.ru/storage/01K7K0DKN43BBTG74V0X4TKE9J.png'
+          nullable: true
         published_at:
           type: string
           format: date-time
@@ -641,7 +646,7 @@ components:
           items:
             $ref: '#/components/schemas/TagItem'
         related:
-          description: 'Связанные новости'
+          description: 'Связанные статьи'
           type: array
           items:
             $ref: '#/components/schemas/NewsItem'
@@ -894,6 +899,11 @@ components:
           type: array
           items:
             type: string
+        preview_image:
+          description: 'Полный URL пути до preview изображения'
+          type: string
+          example: 'https://api.transmaster.ru/storage/01K7K0DKN43BBTG74V0X4TKE9J.png'
+          nullable: true
         fields:
           type: object
           nullable: true
@@ -902,7 +912,7 @@ components:
           items:
             $ref: '#/components/schemas/TagItem'
         related:
-          description: 'Связанные материалы'
+          description: 'Связанные материалы (вручную выбранные страницы того же типа)'
           type: array
           items:
             $ref: '#/components/schemas/PageItem'
@@ -1010,10 +1020,10 @@ components:
           example: 1
         name:
           type: string
-          example: Новости
+          example: 'Экспертный взгляд'
         slug:
           type: string
-          example: news
+          example: expert
         metatags:
           oneOf:
             -
@@ -1039,8 +1049,8 @@ tags:
     name: Feedback
     description: 'API для работы с обратной связью'
   -
-    name: Новости
-    description: 'API для работы с новостями'
+    name: 'Колонка эксперта'
+    description: 'API для работы с колонкой эксперта'
   -
     name: Номенклатура
     description: 'API для работы с номенклатурой'
