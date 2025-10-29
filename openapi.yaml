@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-10-21 13:42:11 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-10-29 10:10:45 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -338,6 +338,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PageItem'
+  /shops:
+    get:
+      tags:
+        - Магазины
+      summary: 'Получение списка магазинов'
+      operationId: 4139720240b5f6ef74468dabaa52e5de
+      parameters:
+        -
+          name: type
+          in: query
+          description: 'Фильтрация по типу магазина'
+          required: false
+          schema:
+            type: string
+            enum:
+              - online
+              - offline
+        -
+          name: page
+          in: query
+          description: 'Номер страницы пагинации'
+          required: false
+          schema:
+            type: integer
+        -
+          name: per_page
+          in: query
+          description: 'Количество записей на странице (максимум 1000)'
+          required: false
+          schema:
+            type: integer
+            maximum: 1000
+      responses:
+        '200':
+          description: 'Список магазинов с пагинацией'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopsResponse'
+  '/shops/{id}':
+    get:
+      tags:
+        - Магазины
+      summary: 'Получение магазина по ID'
+      operationId: 65868c2382a7cbe95753e7e7170e2254
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID магазина'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Данные магазина'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopItem'
+        '404':
+          description: 'Магазин не найден'
   /last-change:
     get:
       tags:
@@ -1000,6 +1062,76 @@ components:
         meta:
           $ref: '#/components/schemas/PaginationMeta'
       type: object
+    ShopItem:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: 'Магазин автозапчастей'
+        address:
+          type: string
+          example: 'г. Москва, ул. Ленина, д. 1'
+          nullable: true
+        phone:
+          type: string
+          example: '+7 (495) 123-45-67'
+          nullable: true
+        email:
+          type: string
+          format: email
+          example: shop@example.com
+          nullable: true
+        site:
+          type: string
+          example: 'https://shop.example.com'
+          nullable: true
+        type:
+          description: 'Тип магазина: online или offline'
+          type: string
+          enum:
+            - online
+            - offline
+          example: offline
+        lat:
+          type: number
+          format: float
+          example: 55.7558
+          nullable: true
+        lng:
+          type: number
+          format: float
+          example: 37.6176
+          nullable: true
+        coordinates:
+          properties:
+            lat:
+              type: number
+              format: float
+              example: 55.7558
+            lon:
+              type: number
+              format: float
+              example: 37.6176
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    ShopsResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopItem'
+        links:
+          $ref: '#/components/schemas/PaginationLinks'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+      type: object
     LastChangeResponse:
       properties:
         timestamp:
@@ -1057,6 +1189,9 @@ tags:
   -
     name: Страницы
     description: 'API для работы со страницами'
+  -
+    name: Магазины
+    description: 'API для работы с магазинами'
   -
     name: 'Системная информация'
     description: 'Служебные эндпоинты системы'
