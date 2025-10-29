@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-10-29 10:10:45 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-10-29 10:21:03 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -355,6 +355,14 @@ paths:
             enum:
               - online
               - offline
+        -
+          name: search
+          in: query
+          description: 'Поиск по названию, адресу, телефону или сайту магазина'
+          required: false
+          schema:
+            type: string
+            maxLength: 255
         -
           name: page
           in: query
