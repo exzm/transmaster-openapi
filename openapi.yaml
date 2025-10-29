@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-10-29 10:21:03 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-10-29 10:26:06 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -14,12 +14,12 @@ servers:
     url: 'https://staging.transmaster.ru'
     description: 'Staging server'
 paths:
-  /blocks:
+  /api/blocks:
     get:
       tags:
         - Блоки
       summary: 'Получение списка блоков'
-      operationId: 431c674022dbdf7a53e94dbe33d3a8aa
+      operationId: 9fe37580c487c60d25e337640be82cd1
       responses:
         '200':
           description: 'Список блоков'
@@ -27,12 +27,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BlocksResponse'
-  '/blocks/show/{code}':
+  '/api/blocks/show/{code}':
     get:
       tags:
         - Блоки
       summary: 'Получение блока по CODE'
-      operationId: 9e3c536b42d2f673ba791240160379f3
+      operationId: 0993a3e903d9c5ee8f1827ced33e7b34
       parameters:
         -
           name: block
@@ -50,12 +50,12 @@ paths:
                 properties:
                   data: { $ref: '#/components/schemas/BlockItem' }
                 type: object
-  /categories:
+  /api/categories:
     get:
       tags:
         - Категории
       summary: 'Получение списка категорий'
-      operationId: d40bd4448424bd166f2de3fd62064ac7
+      operationId: d64be8cf22516a2864584edd915b9b5b
       responses:
         '200':
           description: 'Список категорий с древовидной структурой'
@@ -63,12 +63,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CategoriesResponse'
-  /feedback:
+  /api/feedback:
     post:
       tags:
         - Feedback
       summary: 'Отправить обратную связь'
-      operationId: 24bfe3dc17c7b2c6d77d9f7d2ee7ccf8
+      operationId: 88d215eddc6a3c7fcc662f4601b8fe48
       requestBody:
         required: true
         content:
@@ -84,12 +84,12 @@ paths:
                 $ref: '#/components/schemas/FeedbackResponse'
         '422':
           description: 'Ошибка валидации'
-  /expert-column:
+  /api/expert-column:
     get:
       tags:
         - 'Колонка эксперта'
       summary: 'Получение списка статей колонки эксперта'
-      operationId: 9272c94f173eb6a08c5b7011e035c9c6
+      operationId: 7eef2dc1070e8ccf1ff416a0493c059d
       parameters:
         -
           name: tag
@@ -126,12 +126,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NewsResponse'
-  '/expert-column/show/{slug}':
+  '/api/expert-column/show/{slug}':
     get:
       tags:
         - 'Колонка эксперта'
       summary: 'Получение статьи по ID'
-      operationId: 8c1c95764d02f2c091eec47c00c439e5
+      operationId: 562991954c7cc76cd7de74eea2df63b3
       parameters:
         -
           name: slug
@@ -147,12 +147,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NewsItem'
-  /nomenclatures:
+  /api/nomenclatures:
     get:
       tags:
         - Номенклатура
       summary: 'Получение списка номенклатуры'
-      operationId: 52661a5dc1515a187cfb538e90ac37fc
+      operationId: 0b5667b5bb00f80d5b381e80140acc0b
       parameters:
         -
           name: category
@@ -182,12 +182,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NomenclatureSearchResponse'
-  /nomenclatures/search:
+  /api/nomenclatures/search:
     post:
       tags:
         - Номенклатура
       summary: 'Поиск по номенклатуре'
-      operationId: 5aff78874e673878acc262b977d260e0
+      operationId: ea7b112d6b50b1c481a0a41fd7ec389d
       parameters:
         -
           name: page
@@ -230,12 +230,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NomenclatureSearchResponse'
-  '/nomenclatures/{categotyId}':
+  '/api/nomenclatures/{categotyId}':
     get:
       tags:
         - Номенклатура
       summary: 'Получение номенклатуры по ID категории'
-      operationId: fc088a77910cbf6fe27df9219c930b29
+      operationId: 9890ad2618d47f94f3aa33e0aa417f47
       parameters:
         -
           name: categotyId
@@ -251,12 +251,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NomenclatureSearchResponse'
-  '/nomenclatures/show/{slug}':
+  '/api/nomenclatures/show/{slug}':
     get:
       tags:
         - Номенклатура
       summary: 'Получение номенклатуры по slug'
-      operationId: 1a5fa8d2fcb2293511317faf834b30c7
+      operationId: 303f6dc98fef31524f00b6d9e546bc28
       parameters:
         -
           name: slug
@@ -272,12 +272,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NomenclatureItem'
-  /pages:
+  /api/pages:
     get:
       tags:
         - Страницы
       summary: 'Получение списка страниц'
-      operationId: c60c1a152b98b39222c38655169b6062
+      operationId: 69ab29d22f4e05eb513d200574677b03
       parameters:
         -
           name: type
@@ -317,12 +317,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagesResponse'
-  '/pages/show/{slug}':
+  '/api/pages/show/{slug}':
     get:
       tags:
         - Страницы
       summary: 'Получение страницы по slug'
-      operationId: 8d3246a0d6105d3039fe089bc367ac42
+      operationId: 69cb33ca3d30b5e9e1f1594539300a89
       parameters:
         -
           name: slug
@@ -338,12 +338,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PageItem'
-  /shops:
+  /api/shops:
     get:
       tags:
         - Магазины
       summary: 'Получение списка магазинов'
-      operationId: 4139720240b5f6ef74468dabaa52e5de
+      operationId: d390b5af849350c7dacdae5f70e5205e
       parameters:
         -
           name: type
@@ -385,12 +385,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ShopsResponse'
-  '/shops/{id}':
+  '/api/shops/{id}':
     get:
       tags:
         - Магазины
       summary: 'Получение магазина по ID'
-      operationId: 65868c2382a7cbe95753e7e7170e2254
+      operationId: 23cb973261a232fc08584925068133c9
       parameters:
         -
           name: id
@@ -408,13 +408,13 @@ paths:
                 $ref: '#/components/schemas/ShopItem'
         '404':
           description: 'Магазин не найден'
-  /last-change:
+  /api/last-change:
     get:
       tags:
         - 'Системная информация'
       summary: 'Получение времени последнего изменения данных'
       description: 'Возвращает отметку времени последнего изменения данных в системе. Используется фронтендом для инвалидации кеша.'
-      operationId: 6ba3442fd9a8763633c5083b1646b846
+      operationId: 105ed7572ec873c51af0009086254c1c
       parameters:
         -
           name: If-None-Match
