@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-10-31 18:03:28 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-10-31 19:20:54 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -147,6 +147,83 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NewsItem'
+  /api/newsletter/subscribe:
+    post:
+      tags:
+        - Newsletter
+      summary: 'Подписка на рассылку'
+      operationId: b5566044d410b30a8a287cb0c5e629a6
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscribeRequest'
+      responses:
+        '200':
+          description: 'Подписка успешно оформлена'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscribeResponse'
+        '422':
+          description: 'Ошибка валидации'
+  '/api/newsletter/verify/{token}':
+    get:
+      tags:
+        - Newsletter
+      summary: 'Подтверждение email по токену'
+      operationId: 1b7022bf28b4e665fc6480d82f247250
+      parameters:
+        -
+          name: token
+          in: path
+          description: 'Токен подтверждения email'
+          required: true
+          schema:
+            type: string
+            example: abc123def456...
+      responses:
+        '200':
+          description: 'Email успешно подтвержден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+        '400':
+          description: 'Неверный или устаревший токен'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/api/newsletter/unsubscribe/{token}':
+    get:
+      tags:
+        - Newsletter
+      summary: 'Отписка от рассылки по токену'
+      operationId: 36578d52e37162df12ac785f4ad91032
+      parameters:
+        -
+          name: token
+          in: path
+          description: 'Токен отписки'
+          required: true
+          schema:
+            type: string
+            example: xyz789uvw012...
+      responses:
+        '200':
+          description: 'Успешная отписка от рассылки'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsubscribeResponse'
+        '400':
+          description: 'Невозможно отписаться. Токен недействителен или пользователь уже отписан'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/nomenclatures:
     get:
       tags:
@@ -738,6 +815,45 @@ components:
         metatags:
           $ref: '#/components/schemas/MetaTags'
       type: object
+    SubscribeRequest:
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          example: user@example.com
+        name:
+          type: string
+          maxLength: 255
+          example: 'Иван Иванов'
+          nullable: true
+      type: object
+    SubscribeResponse:
+      properties:
+        message:
+          type: string
+          example: 'Подписка оформлена. Проверьте почту для подтверждения.'
+      type: object
+    VerifyResponse:
+      properties:
+        message:
+          type: string
+          example: 'Email успешно подтвержден!'
+      type: object
+    UnsubscribeResponse:
+      properties:
+        message:
+          type: string
+          example: 'Вы успешно отписались от рассылки.'
+      type: object
+    ErrorResponse:
+      properties:
+        message:
+          type: string
+          example: 'Неверный или устаревший токен.'
+      type: object
     NomenclatureCross:
       properties:
         id:
@@ -1191,6 +1307,9 @@ tags:
   -
     name: 'Колонка эксперта'
     description: 'API для работы с колонкой эксперта'
+  -
+    name: Newsletter
+    description: 'API для работы с подписками на рассылку'
   -
     name: Номенклатура
     description: 'API для работы с номенклатурой'
