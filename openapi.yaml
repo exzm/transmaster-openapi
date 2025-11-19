@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-11-17 19:55:41 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-11-19 09:58:01 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -63,6 +63,95 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CategoriesResponse'
+  /api/downloads:
+    get:
+      tags:
+        - Загрузки
+      summary: 'Получение списка загрузок'
+      operationId: 3fdf7ae30f17a8f70c115c90a491ffdd
+      parameters:
+        -
+          name: tag
+          in: query
+          description: 'Фильтрация по ID тега'
+          required: false
+          schema:
+            type: integer
+        -
+          name: page
+          in: query
+          description: 'Номер страницы пагинации'
+          required: false
+          schema:
+            type: integer
+        -
+          name: per_page
+          in: query
+          description: 'Количество записей на странице'
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Список загрузок с пагинацией'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadsResponse'
+  '/api/downloads/show/{id}':
+    get:
+      tags:
+        - Загрузки
+      summary: 'Получение загрузки по ID'
+      operationId: c14327aeac504695f22227a685adf08a
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID загрузки'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Данные загрузки'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadItem'
+  '/api/downloads/download/{id}':
+    get:
+      tags:
+        - Загрузки
+      summary: 'Скачивание файла'
+      operationId: 04f8240b561584537b150a660b052839
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID загрузки'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Файл для скачивания'
+        '403':
+          description: 'Скачивание файла запрещено'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Скачивание этого файла запрещено' }
+                type: object
+        '404':
+          description: 'Файл не найден'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Файл не найден' }
+                type: object
   /api/feedback:
     post:
       tags:
@@ -686,6 +775,53 @@ components:
           items:
             $ref: '#/components/schemas/CategoryItem'
       type: object
+    DownloadItem:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'Инструкция по установке'
+        description:
+          type: string
+          example: 'Краткое описание файла'
+          nullable: true
+        file_url:
+          type: string
+          example: 'https://api.transmaster.ru/storage/downloads/file.pdf'
+          nullable: true
+        file_name:
+          type: string
+          example: file.pdf
+          nullable: true
+        tag:
+          oneOf:
+            -
+              $ref: '#/components/schemas/TagItem'
+          nullable: true
+          description: 'Тег загрузки'
+        is_download_forbidden:
+          type: boolean
+          example: false
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    DownloadsResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DownloadItem'
+        links:
+          $ref: '#/components/schemas/PaginationLinks'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+      type: object
     FeedbackRequest:
       required:
         - comment
@@ -1302,6 +1438,9 @@ tags:
   -
     name: Категории
     description: 'API для работы с категориями'
+  -
+    name: Загрузки
+    description: 'API для работы с загрузками'
   -
     name: Feedback
     description: 'API для работы с обратной связью'
