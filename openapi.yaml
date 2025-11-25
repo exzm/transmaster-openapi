@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-11-25 20:20:39 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-11-25 20:21:59 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -839,6 +839,10 @@ components:
           $ref: '#/components/schemas/PaginationLinks'
         meta:
           $ref: '#/components/schemas/PaginationMeta'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagItem'
       type: object
     FeedbackRequest:
       required:
