@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-11-28 21:53:24 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-11-30 22:33:43 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -1013,6 +1013,17 @@ components:
           type: string
           example: 'Неверный или устаревший токен.'
       type: object
+    AttachmentFile:
+      properties:
+        file:
+          description: 'URL файла'
+          type: string
+          example: 'https://api.transmaster.ru/storage/files/document.pdf'
+        name:
+          description: 'Название файла'
+          type: string
+          example: 'Инструкция по установке'
+      type: object
     NomenclatureCross:
       properties:
         id:
@@ -1154,10 +1165,17 @@ components:
         country:
           type: string
           example: 'КОРЕЯ, РЕСПУБЛИКА'
-        attachments:
+        images:
+          description: 'Фотографии товара'
           type: array
           items:
             type: string
+          nullable: true
+        attachments:
+          description: 'Прикрепленные файлы (любые) с названиями'
+          type: array
+          items:
+            $ref: '#/components/schemas/AttachmentFile'
           nullable: true
         metatags:
           oneOf:
