@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-12-01 13:20:19 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-12-01 16:30:19 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -330,12 +330,22 @@ paths:
         -
           name: filters
           in: query
-          description: "Строка фильтров в формате 'id:value,value;id:value'. Пример: '89:без датчика;95:задняя'"
+          description: 'Массив фильтров. Каждый фильтр содержит id свойства и массив значений. Пример: [{"id": 89, "values": ["без датчика"]}, {"id": 95, "values": ["задняя"]}]'
           required: false
           schema:
-            type: string
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterRequestItem'
             nullable: true
-          example: '89:без датчика;95:задняя'
+          example:
+            -
+              id: 89
+              values:
+                - 'без датчика'
+            -
+              id: 95
+              values:
+                - задняя
         -
           name: page
           in: query
@@ -394,9 +404,10 @@ paths:
                   type: integer
                   example: '100'
                 filters:
-                  description: "Строка фильтров в формате 'id:value,value;id:value'. Пример: '89:без датчика;95:задняя'"
-                  type: string
-                  example: '89:без датчика;95:задняя'
+                  description: 'Массив фильтров. Каждый фильтр содержит id свойства и массив значений. Пример: [{"id": 89, "values": ["без датчика", "с датчиком"]}, {"id": 95, "values": ["задняя"]}]'
+                  type: array
+                  items: { $ref: '#/components/schemas/FilterRequestItem' }
+                  example: [{ id: 89, values: ['без датчика', 'с датчиком'] }, { id: 95, values: [задняя] }]
                   nullable: true
               type: object
       responses:
@@ -1122,6 +1133,23 @@ components:
         value:
           type: string
           example: '5'
+      type: object
+    FilterRequestItem:
+      required:
+        - id
+        - values
+      properties:
+        id:
+          description: 'ID свойства'
+          type: integer
+          example: 88
+        values:
+          description: 'Массив значений фильтра'
+          type: array
+          items:
+            type: string
+          example:
+            - semi-metallic
       type: object
     Applicability:
       properties:
