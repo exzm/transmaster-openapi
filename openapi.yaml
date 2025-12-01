@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-12-01 16:30:19 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-12-01 17:11:56 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -313,6 +313,65 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  '/api/nomenclature-crosses/{nomenclature}':
+    get:
+      tags:
+        - Кросс-номера
+      summary: 'Получение списка кросс-номеров для номенклатуры'
+      description: 'Возвращает список кросс-номеров для указанной номенклатуры с пагинацией и фильтрацией по бренду и is_oem'
+      operationId: f764520e0b5b027c289fe5d0a85d3f38
+      parameters:
+        -
+          name: nomenclature
+          in: path
+          description: 'ID номенклатуры'
+          required: true
+          schema:
+            type: integer
+        -
+          name: brand
+          in: query
+          description: 'Фильтрация по бренду'
+          required: false
+          schema:
+            type: string
+            example: LADA
+        -
+          name: is_oem
+          in: query
+          description: 'Фильтрация по типу (OEM номер или нет)'
+          required: false
+          schema:
+            type: boolean
+            example: true
+        -
+          name: page
+          in: query
+          description: 'Номер страницы пагинации'
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        -
+          name: per_page
+          in: query
+          description: 'Количество записей на странице'
+          required: false
+          schema:
+            type: integer
+            maximum: 100
+            minimum: 1
+      responses:
+        '200':
+          description: 'Список кросс-номеров с пагинацией и доступными брендами'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NomenclatureCrossListResponse'
+        '404':
+          description: 'Номенклатура не найдена'
+        '422':
+          description: 'Ошибка валидации параметров'
   /api/nomenclatures:
     get:
       tags:
@@ -1034,6 +1093,45 @@ components:
           type: string
           example: 'Неверный или устаревший токен.'
       type: object
+    NomenclatureCrossItem:
+      properties:
+        id:
+          type: integer
+          example: 1
+        brand:
+          type: string
+          example: LADA
+        article:
+          type: string
+          example: '31337'
+        comment:
+          type: string
+          example: 'Примечание к кроссу'
+          nullable: true
+        is_oem:
+          type: boolean
+          example: false
+      type: object
+    NomenclatureCrossListResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NomenclatureCrossItem'
+        links:
+          $ref: '#/components/schemas/PaginationLinks'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+        brands:
+          description: 'Список всех доступных брендов для фильтрации'
+          type: array
+          items:
+            type: string
+          example:
+            - LADA
+            - MOBIS
+            - HYUNDAI
+      type: object
     AttachmentFile:
       properties:
         file:
@@ -1533,6 +1631,9 @@ tags:
   -
     name: Newsletter
     description: 'API для работы с подписками на рассылку'
+  -
+    name: Кросс-номера
+    description: 'API для работы с кросс-номерами номенклатуры'
   -
     name: Номенклатура
     description: 'API для работы с номенклатурой'
