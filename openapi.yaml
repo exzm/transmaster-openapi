@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-12-01 10:52:59 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-12-01 12:05:26 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -385,9 +385,10 @@ paths:
                   type: integer
                   example: '100'
                 filters:
-                  description: 'Массив фильтров для уточнения поиска'
-                  type: array
-                  items: { $ref: '#/components/schemas/SearchFilter' }
+                  description: "Строка фильтров в формате 'id:value,value;id:value'. Пример: '89:без датчика;95:задняя'"
+                  type: string
+                  example: '89:без датчика;95:задняя'
+                  nullable: true
               type: object
       responses:
         '200':
