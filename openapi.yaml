@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-12-01 18:47:53 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-12-04 09:14:03 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -986,7 +986,7 @@ components:
           description: Содержимое
           type: string
           example: 'Какая-то статья'
-        excerpt:
+        preview_text:
           description: Аннонс
           type: string
           example: 'Краткая выжимка'
@@ -1385,7 +1385,7 @@ components:
         body:
           type: string
           example: '<p>Текст страницы</p>'
-        excerpt:
+        preview_text:
           description: Аннонс
           type: string
           example: 'Краткая выжимка'
