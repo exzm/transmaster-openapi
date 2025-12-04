@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-12-04 09:34:25 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-12-04 10:50:31 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -833,6 +833,21 @@ components:
         description:
           type: string
           nullable: true
+        sort:
+          description: 'Порядок сортировки'
+          type: integer
+        icon:
+          description: 'URL иконки категории'
+          type: string
+          nullable: true
+        utp:
+          description: 'Массив URL изображений UTP'
+          type: array
+          items:
+            type: string
+        nomenclatures_count:
+          description: 'Количество номенклатуры в категории и подкатегориях'
+          type: integer
         attachments:
           properties:
             icon:
@@ -872,6 +887,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CategoryItem'
+        metatags:
+          oneOf:
+            -
+              $ref: '#/components/schemas/MetaTags'
+          nullable: true
       type: object
     DownloadItem:
       properties:
@@ -990,9 +1010,14 @@ components:
           description: Аннонс
           type: string
           example: 'Краткая выжимка'
+          nullable: true
         slug:
           type: string
           example: /expert-column/show/3
+        type:
+          description: 'Тип статьи'
+          type: string
+          example: expert
         pinned:
           type: boolean
           example: true
@@ -1389,6 +1414,7 @@ components:
           description: Аннонс
           type: string
           example: 'Краткая выжимка'
+          nullable: true
         slug:
           type: string
           example: contacts
@@ -1400,9 +1426,9 @@ components:
           type: boolean
           example: false
         attachments:
-          type: array
-          items:
-            type: string
+          description: 'Объект с вложениями. Может содержать массивы files (строки или объекты с полями file и label) и images (строки)'
+          type: object
+          nullable: true
         preview_image:
           description: 'Полный URL пути до preview изображения'
           type: string
