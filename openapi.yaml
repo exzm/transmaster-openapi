@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'TransMaster API'
-  description: "API for TransMaster\n\nLast updated: 2025-12-08 18:13:59 (Asia/Yekaterinburg)"
+  description: "API for TransMaster\n\nLast updated: 2025-12-08 18:18:46 (Asia/Yekaterinburg)"
   contact:
     name: 'Andrey Voinkov'
     email: voinkov.andrey@yandex.ru
@@ -318,7 +318,7 @@ paths:
       tags:
         - Кросс-номера
       summary: 'Получение списка кросс-номеров для номенклатуры'
-      description: 'Возвращает список кросс-номеров для указанной номенклатуры с пагинацией и фильтрацией по бренду и is_oem'
+      description: 'Возвращает список кросс-номеров для указанной номенклатуры с пагинацией, фильтрацией по бренду и is_oem, а также поиском по артикулу и бренду'
       operationId: f764520e0b5b027c289fe5d0a85d3f38
       parameters:
         -
@@ -344,6 +344,14 @@ paths:
           schema:
             type: boolean
             example: true
+        -
+          name: search
+          in: query
+          description: 'Поиск по артикулу и бренду (частичное совпадение, регистронезависимый)'
+          required: false
+          schema:
+            type: string
+            example: '31337'
         -
           name: page
           in: query
